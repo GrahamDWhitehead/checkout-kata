@@ -3,5 +3,6 @@
     public interface IBasket
     {
         bool AddItem(char sku);
+        decimal Total { get; }
     }
 }

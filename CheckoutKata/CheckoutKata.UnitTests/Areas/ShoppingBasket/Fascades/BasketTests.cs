@@ -1,4 +1,5 @@
-﻿using CheckoutKata.Areas.ShoppingBasket.Fascades;
+﻿using System.Collections.Generic;
+using CheckoutKata.Areas.ShoppingBasket.Fascades;
 using CheckoutKata.Areas.Stock.Models;
 using CheckoutKata.Areas.Stock.Repositories;
 using FluentAssertions;
@@ -22,11 +23,19 @@ namespace CheckoutKata.UnitTests.Areas.ShoppingBasket.Fascades
         {
             _itemRepository = Substitute.For<IItemRepository>();
 
-            foreach (var sku in "ABCD")
+            var inventory = new Dictionary<char, decimal>
+            {
+                {'A', 10},
+                {'B', 15},
+                {'C', 40},
+                {'D', 55}
+            };
+            foreach (var inventoryItem in inventory)
             {
                 var item = Substitute.For<IItem>();
-                item.Sku.Returns(sku);
-                _itemRepository.GetItemBySku(sku).Returns(item);
+                item.Sku.Returns(inventoryItem.Key);
+                item.UnitPrice.Returns(inventoryItem.Value);
+                _itemRepository.GetItemBySku(inventoryItem.Key).Returns(item);
             }
 
             _sut = new Basket(_itemRepository);
@@ -68,10 +77,10 @@ namespace CheckoutKata.UnitTests.Areas.ShoppingBasket.Fascades
         }
 
         [Theory]
-        [InlineData('a', 10)]
-        [InlineData('b', 15)]
-        [InlineData('c', 40)]
-        [InlineData('d', 55)]
+        [InlineData('A', 10)]
+        [InlineData('B', 15)]
+        [InlineData('C', 40)]
+        [InlineData('D', 55)]
         public void AddItem_ValidSkuProvided_ItemPriceAddedToBasketTotal(char sku, decimal expectedTotal)
         {
             // Act

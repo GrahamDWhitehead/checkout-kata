@@ -24,13 +24,30 @@ namespace CheckoutKata.Areas.ShoppingBasket.Fascades
 
         #region IBasket
 
+        public decimal Total { get; private set; }
+
         public bool AddItem(char sku)
         {
             var item = _itemRepository.GetItemBySku(sku);
             if (item == null) return false;
 
             _basketItems.Add(item);
+            Total = CalculateTotal();
             return true;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private decimal CalculateTotal()
+        {
+            Total = 0;
+            foreach (var item in _basketItems)
+            {
+                Total += item.UnitPrice;
+            }
+            return Total;
         }
 
         #endregion
