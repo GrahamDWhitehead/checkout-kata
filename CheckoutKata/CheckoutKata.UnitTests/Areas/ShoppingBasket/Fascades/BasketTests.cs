@@ -51,6 +51,23 @@ namespace CheckoutKata.UnitTests.Areas.ShoppingBasket.Fascades
             result.Should().BeTrue();
         }
 
+        [Theory]
+        [InlineData('a')]
+        [InlineData('X')]
+        [InlineData(' ')]
+        [InlineData('1')]
+        public void AddItem_InvalidSkuProvided_ReturnsFalse(char sku)
+        {
+            // Arrange
+            _itemRepository.GetItemBySku(sku).Returns((IItem)null);
+
+            // Act
+            var result = _sut.AddItem(sku);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
         #endregion
     }
 }
