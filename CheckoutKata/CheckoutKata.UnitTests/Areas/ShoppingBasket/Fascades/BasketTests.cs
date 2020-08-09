@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CheckoutKata.Areas.Deals;
 using CheckoutKata.Areas.ShoppingBasket.Fascades;
 using CheckoutKata.Areas.Stock.Models;
 using CheckoutKata.Areas.Stock.Repositories;
@@ -39,7 +40,13 @@ namespace CheckoutKata.UnitTests.Areas.ShoppingBasket.Fascades
                 _itemRepository.GetItemBySku(inventoryItem.Key).Returns(item);
             }
 
-            _sut = new Basket(_itemRepository);
+            _xItemsForYDeal = Substitute.For<IDeal>();
+            IEnumerable<IDeal> deals = new List<IDeal>
+            {
+                _xItemsForYDeal
+            };
+
+            _sut = new Basket(_itemRepository, deals);
         }
 
         #endregion
