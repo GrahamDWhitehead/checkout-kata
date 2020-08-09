@@ -99,11 +99,11 @@ namespace CheckoutKata.UnitTests.Areas.ShoppingBasket.Fascades
         }
 
         [Theory]
-        [InlineData('A', 10)]
-        [InlineData('B', 15)]
-        [InlineData('C', 40)]
-        [InlineData('D', 55)]
-        public void AddItem_ValidSkuProvided_DiscountsApplied(char sku, decimal expectedTotal)
+        [InlineData('A')]
+        [InlineData('B')]
+        [InlineData('C')]
+        [InlineData('D')]
+        public void AddItem_ValidSkuProvided_DiscountsApplied(char sku)
         {
             // Act
             _sut.AddItem(sku);
