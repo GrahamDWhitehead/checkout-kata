@@ -26,8 +26,11 @@ namespace CheckoutKata.UnitTests.Areas.Deals
 
         #region Tests
 
-        [Fact]
-        public void CalculateApplicableDiscount_3For40()
+        [Theory]
+        [InlineData(5, 3, 5)]
+        [InlineData(10, 2, 20)]
+        [InlineData(10, 4, 10)]
+        public void CalculateApplicableDiscount_3For40(decimal discountGiven, int itemsToQualify, decimal expectedDiscount)
         {
             // Arrange
             var item = Substitute.For<IItem>();
@@ -36,18 +39,18 @@ namespace CheckoutKata.UnitTests.Areas.Deals
 
             var basket = new List<IItem>
             {
-                item, item, item
+                item, item, item, item, item
             };
 
             _sut.ItemOnOffer = item;
-            _sut.DiscountGiven = 5;
-            _sut.ItemsToQualify = 3;
+            _sut.DiscountGiven = discountGiven;
+            _sut.ItemsToQualify = itemsToQualify;
 
             // Act
             var result = _sut.CalculateApplicableDiscount(basket);
 
             // Assert
-            result.Should().Be(5);
+            result.Should().Be(expectedDiscount);
         }
 
         #endregion
