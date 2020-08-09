@@ -27,9 +27,9 @@ namespace CheckoutKata.Areas.ShoppingBasket.Fascades
         public bool AddItem(char sku)
         {
             var item = _itemRepository.GetItemBySku(sku);
+            if (item == null) return false;
 
             _basketItems.Add(item);
-
             return true;
         }
 
