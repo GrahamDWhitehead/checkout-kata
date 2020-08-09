@@ -14,6 +14,7 @@ namespace CheckoutKata.UnitTests.Areas.ShoppingBasket.Fascades
 
         private readonly IBasket _sut;
         private readonly IItemRepository _itemRepository;
+        private readonly IDeal _xItemsForYDeal;
 
         #endregion
 
@@ -88,6 +89,21 @@ namespace CheckoutKata.UnitTests.Areas.ShoppingBasket.Fascades
 
             // Assert
             _sut.Total.Should().Be(expectedTotal);
+        }
+
+        [Theory]
+        [InlineData('A', 10)]
+        [InlineData('B', 15)]
+        [InlineData('C', 40)]
+        [InlineData('D', 55)]
+        public void AddItem_ValidSkuProvided_DiscountsApplied(char sku, decimal expectedTotal)
+        {
+            // Act
+            _sut.AddItem(sku);
+
+            // Assert
+            _xItemsForYDeal.Received(1).CalculateApplicableDiscount(Arg.Is<List<IItem>>(x
+                => x.Count.Equals(1)));
         }
 
         #endregion
