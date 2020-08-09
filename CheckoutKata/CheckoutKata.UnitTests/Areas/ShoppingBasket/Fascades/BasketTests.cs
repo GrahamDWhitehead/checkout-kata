@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CheckoutKata.Areas.ShoppingBasket.Fascades;
+﻿using CheckoutKata.Areas.ShoppingBasket.Fascades;
 using CheckoutKata.Areas.Stock.Models;
 using CheckoutKata.Areas.Stock.Repositories;
 using FluentAssertions;
@@ -66,6 +65,20 @@ namespace CheckoutKata.UnitTests.Areas.ShoppingBasket.Fascades
 
             // Assert
             result.Should().BeFalse();
+        }
+
+        [Theory]
+        [InlineData('a', 10)]
+        [InlineData('b', 15)]
+        [InlineData('c', 40)]
+        [InlineData('d', 55)]
+        public void AddItem_ValidSkuProvided_ItemPriceAddedToBasketTotal(char sku, decimal expectedTotal)
+        {
+            // Act
+            _sut.AddItem(sku);
+
+            // Assert
+            _sut.Total.Should().Be(expectedTotal);
         }
 
         #endregion
