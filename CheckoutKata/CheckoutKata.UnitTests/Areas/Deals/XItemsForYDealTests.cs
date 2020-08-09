@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using CheckoutKata.Areas.Deals;
 using CheckoutKata.Areas.Stock.Models;
+using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
